@@ -20,14 +20,6 @@ class SignupViewController: BaseViewController, Storyboarded {
     @IBOutlet weak var termsLbl: UILabel!
     
     var screenType: ScreenType = .signup
-    
-    var errorMessage: String = "" {
-        didSet {
-            if errorMessage.isEmpty {
-                
-            }
-        }
-    }
     var showError: Bool = false {
         didSet {
             if showError {
@@ -44,15 +36,7 @@ class SignupViewController: BaseViewController, Storyboarded {
         
         initializeUI()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // underline is set late to give way for border width to get correct width of button
-        // button width changes from text width
-        loginBtn.addBottomBorderWithColor(color: placeholderColor, width: 1.5)
-    }
-    
+   
     @IBAction func handleSignup(_ sender: CustomButtonShape) {
         let data = (username: usernameField.text!, password: passwordField.text!)
         
@@ -69,15 +53,19 @@ class SignupViewController: BaseViewController, Storyboarded {
         passwordErrorLbl.isHidden = hasNoPasswordError
         
         if hasNoUsernameError && hasNoPasswordError {
-            
             self.didSubmitCredentials?(data.username, data.password)
-            
-            //coordinator?.eventOccurred(with: screenType == ScreenType.signup ? .signupProceed : .loginProceed, data: data)
         }
     }
     
     @IBAction func handleLogin(_ sender: UIButton) {
-        coordinator?.eventOccurred(with: screenType == ScreenType.signup ? .login : .signup, data: nil)
+        /// old implementation of changing screens
+        /// coordinator?.eventOccurred(with: screenType == ScreenType.signup ? .login : .signup, data: nil)
+    
+        /*Instead, just change buttons**/
+        coordinator?.screenType = screenType == .signup ? .login : .signup
+        self.screenType = coordinator?.screenType ?? .signup
+        signupBtn.setTitle(screenType.rawValue, for: .normal)
+        loginBtn.setTitle(screenType.oppositeScreentype.rawValue, for: .normal)
     }
     
 }

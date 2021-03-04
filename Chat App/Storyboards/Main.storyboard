@@ -188,12 +188,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rXB-D2-neT">
-                                <rect key="frame" x="187" y="349" width="40" height="22"/>
+                                <rect key="frame" x="179.5" y="349" width="55" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="jH8-ry-NWQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ArialMT-Medium" family="Arial MT" pointSize="16"/>
-                                <state key="normal" title="Login">
+                                <state key="normal" title="Sign up">
                                     <color key="titleColor" name="placeholderColor"/>
                                 </state>
                                 <connections>
@@ -213,18 +213,32 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u7r-Eq-bfb" userLabel="dummyBorder" customClass="CustomShapeView" customModule="Chat_App" customModuleProvider="target">
+                                <rect key="frame" x="179.5" y="369" width="55" height="1.5"/>
+                                <color key="backgroundColor" name="placeholderColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1.5" id="33m-nv-Kwm"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="yNJ-F6-DmL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="NFH-oS-Lr1" firstAttribute="top" secondItem="7NS-Fg-Nqf" secondAttribute="bottom" constant="40" id="1R0-n7-k3v"/>
                             <constraint firstItem="tDS-kI-LG7" firstAttribute="centerX" secondItem="yNJ-F6-DmL" secondAttribute="centerX" id="2Bq-6j-Bcp"/>
+                            <constraint firstItem="u7r-Eq-bfb" firstAttribute="centerX" secondItem="rXB-D2-neT" secondAttribute="centerX" id="5ra-l7-Lm6"/>
                             <constraint firstItem="7os-fO-8WF" firstAttribute="leading" secondItem="tDS-kI-LG7" secondAttribute="leading" id="6pX-OK-Efs"/>
                             <constraint firstItem="7os-fO-8WF" firstAttribute="trailing" secondItem="tDS-kI-LG7" secondAttribute="trailing" id="9v9-Pd-7ez"/>
                             <constraint firstItem="rXB-D2-neT" firstAttribute="top" secondItem="NFH-oS-Lr1" secondAttribute="bottom" constant="15" id="AHF-vY-oZJ"/>
                             <constraint firstItem="rXB-D2-neT" firstAttribute="centerX" secondItem="NFH-oS-Lr1" secondAttribute="centerX" id="EZA-4q-82C"/>
                             <constraint firstItem="7NS-Fg-Nqf" firstAttribute="leading" secondItem="ijP-5e-d7v" secondAttribute="leading" id="I00-b1-r0m"/>
                             <constraint firstItem="NFH-oS-Lr1" firstAttribute="width" secondItem="0dU-ev-Bpf" secondAttribute="width" multiplier="0.9" id="MB1-Hh-ZHr"/>
+                            <constraint firstItem="u7r-Eq-bfb" firstAttribute="top" secondItem="rXB-D2-neT" secondAttribute="bottom" constant="-2" id="NOt-db-4Dz"/>
                             <constraint firstItem="tDS-kI-LG7" firstAttribute="width" secondItem="0dU-ev-Bpf" secondAttribute="width" multiplier="0.9" id="Uo0-kO-wcL"/>
                             <constraint firstItem="7NS-Fg-Nqf" firstAttribute="top" secondItem="ijP-5e-d7v" secondAttribute="bottom" constant="8" symbolic="YES" id="ZQe-c8-iHN"/>
                             <constraint firstItem="QJO-ei-wyA" firstAttribute="trailing" secondItem="ijP-5e-d7v" secondAttribute="trailing" id="a8e-3o-yyU"/>
@@ -236,6 +250,7 @@
                             <constraint firstItem="ijP-5e-d7v" firstAttribute="width" secondItem="tDS-kI-LG7" secondAttribute="width" id="l8E-8U-2L2"/>
                             <constraint firstItem="7os-fO-8WF" firstAttribute="top" secondItem="tDS-kI-LG7" secondAttribute="bottom" constant="8" symbolic="YES" id="onk-8j-fC6"/>
                             <constraint firstItem="ijP-5e-d7v" firstAttribute="top" secondItem="7os-fO-8WF" secondAttribute="bottom" constant="5" id="sNi-OP-Yl9"/>
+                            <constraint firstItem="u7r-Eq-bfb" firstAttribute="width" secondItem="rXB-D2-neT" secondAttribute="width" id="xTl-cj-ZsI"/>
                             <constraint firstItem="NFH-oS-Lr1" firstAttribute="centerX" secondItem="yNJ-F6-DmL" secondAttribute="centerX" id="ym3-LR-DKR"/>
                         </constraints>
                     </view>
