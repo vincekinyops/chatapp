@@ -47,6 +47,11 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         child.screenType = self.screenType
         child.parentCoordinator = self
         childCoordinators.append(child)
+        child.onLogout = {
+            print("Log out, proceed to signup screen")
+            self.screenType = ScreenType.signup
+            self.openSignupVC()
+        }
         child.start()
     }
     
@@ -75,16 +80,16 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         switch type {
         case .signup:
             self.screenType = ScreenType.signup
-            openSignupVC()
         case .login:
             self.screenType = ScreenType.login
-            openSignupVC()
         case .logout:
             self.screenType = ScreenType.signup
-            openSignupVC()
         default:
             return
         }
+        
+        // assumption due to screen flows, that signup vc is the final screen
+        openSignupVC()
     }
     
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
@@ -97,10 +102,10 @@ class MainCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
         if navigationController.viewControllers.contains(fromViewController) {
             
             // NOTE: special case for reusing of SignupVC, must remove previous instances to avoid memory loop bug
-            if let signupVC = fromViewController as? SignupViewController {
-                removeDuplicateVC(signupVC)
-                childDidFinish(signupVC.coordinator)
-            }
+//            if let signupVC = fromViewController as? SignupViewController {
+//                removeDuplicateVC(signupVC)
+//                childDidFinish(signupVC.coordinator)
+//            }
             return
         }
         

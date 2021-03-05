@@ -83,6 +83,61 @@ class CustomShapeView: UIView {
 
 @IBDesignable
 class CustomButtonShape: UIButton {
+    var originalFrame: CGRect!
+    var originalCornerRad: CGFloat!
+    var originalTitle: String!
+    
+    func animateButtonLoading(_ load: Bool) {
+        self.originalFrame = self.frame
+        self.originalCornerRad = self.layer.cornerRadius
+        self.originalTitle = self.title(for: .normal)
+        // if should animate
+        if load {
+            let spinner = UIActivityIndicatorView(frame: .zero)
+            spinner.frame = CGRect(x: 0, y: 0, width: self.frame.height - 5, height: self.frame.height - 5)
+            spinner.style = .large
+            spinner.color = .white
+            spinner.alpha = 1.0
+            spinner.hidesWhenStopped = true
+            spinner.tag = 11 /// must be unique for identification purposes
+            
+            self.addSubview(spinner)
+            self.setTitle("", for: .normal)
+            
+            self.layoutIfNeeded()
+            UIView.animate(withDuration: 0.2) {
+                //self.layer.cornerRadius = self.frame.height / 2
+                //self.frame = CGRect(x: self.frame.midX - (self.frame.height / 2), y: self.frame.origin.y, width: self.frame.height, height: self.frame.height)
+                self.layoutIfNeeded()
+            } completion: { (done) in
+                if done == true {
+                    spinner.startAnimating()
+                    spinner.center = self.center //CGPoint(x: self.frame.width / 2 + 1, y: self.frame.width / 2 + 1)
+                    spinner.fadeTo(alpha: 1.0, duration: 0.2)
+                    self.layoutIfNeeded()
+                }
+            }
+            
+            self.isUserInteractionEnabled = false
+
+        } else {
+            self.isUserInteractionEnabled = true
+            for subview in self.subviews {
+                if subview.tag == 11 {
+                    subview.removeFromSuperview()
+                }
+            }
+            
+            UIView.animate(withDuration: 0.2) {
+                self.layer.cornerRadius = self.originalCornerRad
+                self.frame = self.originalFrame
+                self.setTitle(self.originalTitle, for: .normal)
+                self.layoutIfNeeded()
+            }
+        }
+        
+    }
+    
     let pulseLayer: CAShapeLayer = {
         let shape = CAShapeLayer()
         shape.strokeColor = UIColor.clear.cgColor

@@ -36,20 +36,10 @@ class SignupCoordinator: Coordinator {
         let vc = SignupViewController.instantiate()
         vc.coordinator = self
         vc.didSubmitCredentials = { [unowned self] (username, password) in
-            /// Uncomment the comments to check if username is already existing
-            
-            //            self.parentCoordinator?.dbController.isUserExist(with: username, completion: { (isExisting, error) in
-            //                if let err = error {
-            //                    print("Error signing up user: \(err)")
-            //                    return
-            //                } else {
-            //                    if isExisting {
-            //                        vc.errorMessage = "Username is already used."
-            //                    } else {
-            //                        vc.errorMessage = ""
-            //
+            vc.signupBtn.isEnabled = false
             if screenType == .signup {
                 self.parentCoordinator?.dbController.signup(username: username, password: password) { [unowned self] (success, error) in
+                    vc.signupBtn.isEnabled = true
                     if let err = error {
                         print("Error signing up: \(err)")
                         vc.showError = true
@@ -61,6 +51,7 @@ class SignupCoordinator: Coordinator {
                 }
             } else if screenType == .login {
                 self.parentCoordinator?.dbController.signin(username: username, password: password, completion: { (success, error) in
+                    vc.signupBtn.isEnabled = true
                     if let err = error {
                         print("Error signing in: \(err)")
                         vc.showError = true
@@ -72,10 +63,6 @@ class SignupCoordinator: Coordinator {
                     }
                 })
             }
-            
-            //                    }
-            //                }
-            //            })
         }
         navigationController.pushViewController(vc, animated: true)
     }

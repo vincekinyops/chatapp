@@ -25,6 +25,8 @@
 		2134638625F07E2200ABF013 /* ChatOthersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2134638425F07E2200ABF013 /* ChatOthersTableViewCell.xib */; };
 		2134638B25F0859800ABF013 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2134638A25F0859800ABF013 /* UILabel+Extensions.swift */; };
 		2193DD5D25F0A421004573AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2193DD5C25F0A421004573AC /* GoogleService-Info.plist */; };
+		21A6A12B25F205F100188A81 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A6A12A25F205F100188A81 /* SpinnerViewController.swift */; };
+		21A6A13125F23B5600188A81 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A6A13025F23B5600188A81 /* UIButton+Extensions.swift */; };
 		21AE800025F0A63000A4EBFE /* DBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AE7FFF25F0A63000A4EBFE /* DBController.swift */; };
 		21AE800825F0ABEF00A4EBFE /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AE800725F0ABEF00A4EBFE /* Enums.swift */; };
 		21AE801025F0D2CB00A4EBFE /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AE800F25F0D2CB00A4EBFE /* UITableView+Extensions.swift */; };
@@ -85,6 +87,8 @@
 		2134638425F07E2200ABF013 /* ChatOthersTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatOthersTableViewCell.xib; sourceTree = "<group>"; };
 		2134638A25F0859800ABF013 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		2193DD5C25F0A421004573AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		21A6A12A25F205F100188A81 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		21A6A13025F23B5600188A81 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		21AE7FFF25F0A63000A4EBFE /* DBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBController.swift; sourceTree = "<group>"; };
 		21AE800725F0ABEF00A4EBFE /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		21AE800F25F0D2CB00A4EBFE /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 				2134638A25F0859800ABF013 /* UILabel+Extensions.swift */,
 				21AE800F25F0D2CB00A4EBFE /* UITableView+Extensions.swift */,
 				21AE804425F137EA00A4EBFE /* Date+Extensions.swift */,
+				21A6A13025F23B5600188A81 /* UIButton+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -223,6 +228,14 @@
 			path = Chat;
 			sourceTree = "<group>";
 		};
+		21A6A12925F205DD00188A81 /* Spinner */ = {
+			isa = PBXGroup;
+			children = (
+				21A6A12A25F205F100188A81 /* SpinnerViewController.swift */,
+			);
+			path = Spinner;
+			sourceTree = "<group>";
+		};
 		21AE7FFE25F0A5BE00A4EBFE /* DB */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +270,7 @@
 		21B5FCC225EF4C6B00723F38 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				21A6A12925F205DD00188A81 /* Spinner */,
 				2121B63C25EF91C30083530A /* Chat */,
 				21B5FCC625EF4C8600723F38 /* CustomKit.swift */,
 			);
@@ -482,6 +496,7 @@
 				2105194A25EF37AB008EA36A /* MainViewController.swift in Sources */,
 				21FA6AF725EF766A00619DD4 /* ChatViewController.swift in Sources */,
 				21044B3925EF55510065E29B /* BaseViewController.swift in Sources */,
+				21A6A12B25F205F100188A81 /* SpinnerViewController.swift in Sources */,
 				21AE800825F0ABEF00A4EBFE /* Enums.swift in Sources */,
 				21044B3125EF51940065E29B /* UIViewController+Extensions.swift in Sources */,
 				21FA6AED25EF6D9500619DD4 /* AppStrings.swift in Sources */,
@@ -490,6 +505,7 @@
 				21FA6AE825EF6CB400619DD4 /* UIView+Extensions.swift in Sources */,
 				21AE804525F137EA00A4EBFE /* Date+Extensions.swift in Sources */,
 				2134638B25F0859800ABF013 /* UILabel+Extensions.swift in Sources */,
+				21A6A13125F23B5600188A81 /* UIButton+Extensions.swift in Sources */,
 				21B5FCBB25EF499B00723F38 /* Coordinator.swift in Sources */,
 				2105194825EF37AB008EA36A /* SceneDelegate.swift in Sources */,
 				21044B2625EF50BD0065E29B /* SignupCoordinator.swift in Sources */,

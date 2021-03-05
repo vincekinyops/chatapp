@@ -20,14 +20,13 @@ class ChatOwnTableViewCell: UITableViewCell {
         bubblePoint.makeRightTriangle()
         dateLbl.isHidden = true
         textLbl.isUserInteractionEnabled = true
+        
+        // NOTE: uncomment to enable showing sent date
         onTapText()
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // dateLbl.isHidden = !selected
-        // Configure the view for the selected state
     }
     
     func onTapText() {

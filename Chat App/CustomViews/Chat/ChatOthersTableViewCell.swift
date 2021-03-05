@@ -17,14 +17,15 @@ class ChatOthersTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         bubblePoint.makeLeftTriangle()
+        dateLbl.isHidden = true
         textLbl.isUserInteractionEnabled = true
+        
+        // NOTE: uncomment to enable
         onTapText()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        dateLbl.isHidden = !selected
     }
     
     func onTapText() {

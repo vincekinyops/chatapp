@@ -49,7 +49,7 @@ extension UIView {
         let size = target.frame.size
         
         path.move(to: CGPoint(x: 0, y: 0))
-        path.addLine(to: CGPoint(x: size.width, y: (size.height / 2) + 1))
+        path.addLine(to: CGPoint(x: size.width, y: (size.height / 2)))
         path.addLine(to: CGPoint(x: 0, y: size.height))
         path.addLine(to: CGPoint(x: 0, y: 0))
         
@@ -67,7 +67,7 @@ extension UIView {
         let size = target.frame.size
         
         path.move(to: CGPoint(x: size.width, y: 0))
-        path.addLine(to: CGPoint(x: 0, y: (size.height / 2) + 1))
+        path.addLine(to: CGPoint(x: 0, y: (size.height / 2)))
         path.addLine(to: CGPoint(x: size.width, y: size.height))
         path.addLine(to: CGPoint(x: size.width, y: 0))
         
@@ -78,4 +78,9 @@ extension UIView {
         self.layer.insertSublayer(shape, at: 0)
     }
     
+    func fadeTo(alpha: CGFloat, duration: TimeInterval) {
+        UIView.animate(withDuration: duration) {
+            self.alpha = alpha
+        }
+    }
 }

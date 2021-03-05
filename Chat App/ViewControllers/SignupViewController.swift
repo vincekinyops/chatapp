@@ -19,6 +19,7 @@ class SignupViewController: BaseViewController, Storyboarded {
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var termsLbl: UILabel!
     
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
     var screenType: ScreenType = .signup
     var showError: Bool = false {
         didSet {
@@ -26,6 +27,7 @@ class SignupViewController: BaseViewController, Storyboarded {
                 usernameErrorLbl.isHidden = !showError
                 passwordErrorLbl.isHidden = !showError
             }
+            signupBtn.isEnabled = true
         }
     }
     
@@ -36,8 +38,19 @@ class SignupViewController: BaseViewController, Storyboarded {
         
         initializeUI()
     }
-   
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // transferred stopping loader here
+        self.loader(false)
+    }
+    
+    // MARK: - SIGN UP
     @IBAction func handleSignup(_ sender: CustomButtonShape) {
+        
+        self.loader(true)
+        
         let data = (username: usernameField.text!, password: passwordField.text!)
         
         /// Limit to 8-16 characters only
@@ -53,7 +66,23 @@ class SignupViewController: BaseViewController, Storyboarded {
         passwordErrorLbl.isHidden = hasNoPasswordError
         
         if hasNoUsernameError && hasNoPasswordError {
-            self.didSubmitCredentials?(data.username, data.password)
+            self.didSubmitCredentials?(data.username.trimmingCharacters(in: .whitespacesAndNewlines), data.password.trimmingCharacters(in: .whitespacesAndNewlines))
+        } else {
+            self.loader(false)
+        }
+    }
+    
+    private func loader(_ load: Bool) {
+        if load {
+            signupBtn.isEnabled = false
+            loginBtn.isEnabled = false
+            signupBtn.setTitle("", for: .normal)
+            activityView.startAnimating()
+        } else {
+            activityView.stopAnimating()
+            signupBtn.setTitle(screenType.rawValue , for: .normal)
+            signupBtn.isEnabled = true
+            loginBtn.isEnabled = true
         }
     }
     
@@ -65,6 +94,7 @@ class SignupViewController: BaseViewController, Storyboarded {
         coordinator?.screenType = screenType == .signup ? .login : .signup
         self.screenType = coordinator?.screenType ?? .signup
         signupBtn.setTitle(screenType.rawValue, for: .normal)
+        signupBtn.animateButtonLoading(false)
         loginBtn.setTitle(screenType.oppositeScreentype.rawValue, for: .normal)
     }
     
@@ -91,6 +121,7 @@ extension SignupViewController {
         signupBtn.setTitle(screenType.rawValue , for: .normal)
         loginBtn.setTitle(screenType.oppositeScreentype.rawValue , for: .normal)
         
+        hideKeyboardOnTap()
     }
 }
 

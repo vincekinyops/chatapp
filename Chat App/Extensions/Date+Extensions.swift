@@ -15,9 +15,9 @@ extension Date {
         
         // if the chat date is recent meaning today, dont display date, only time
         if calendar.isDateInToday(self) {
-            formatter.dateFormat = "HH:mm a"
+            formatter.dateFormat = "h:mm a"
         } else {
-            formatter.dateFormat = "MMM dd, yyyy HH:mm a"
+            formatter.dateFormat = "MMM d, yyyy h:mm a"
         }
         
         return formatter.string(from: self)

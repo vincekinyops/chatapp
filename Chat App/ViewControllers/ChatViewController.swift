@@ -27,27 +27,20 @@ class ChatViewController: BaseViewController, Storyboarded {
     var onSend: ((_ message: String) -> ())?
     
     var messages: [Chat] = []
-    var query: Query!
-    var lastDoc: DocumentSnapshot!
     var listener: ListenerRegistration?
+    
+    var assumedUsername: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        assumedUsername = coordinator?.dbController.user?.displayName
         
         initializeUI()
         
         fetchChat()
         
-        hideKeyboardOnTap()
-    }
-   
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.tableView.scrollToBottom()
-        }
-        
+        hideKeyboardOnTapTable()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,26 +52,34 @@ class ChatViewController: BaseViewController, Storyboarded {
         deregisterFromKeyboardNotifications()
     }
     
+    // MARK: - SEND MESSAGE
     @IBAction func handleSend(_ sender: CustomButtonShape) {
         guard !textInputView.text.isEmpty else {return}
         let haptic = UIImpactFeedbackGenerator(style: .light)
         haptic.impactOccurred()
-        coordinator?.dbController.sendMessage(textInputView.text) { [unowned self] (success) in
+        
+        // Note: disable to prevent spam click
+        sender.isEnabled = false
+        
+        coordinator?.dbController.sendMessage(textInputView.text) { (success) in
             print("Message sending: \(success)")
             
-            //if success {
-            // NOTE: regardless of success in sending message, clear
-                self.textInputView.text = ""
-                self.textViewHeightConstraint.isActive = true
-                self.placeholderLbl.isHidden = false
-                self.tableView.scrollToBottom()
-            //} else {
-                
-            //}
+        }
+        
+        // NOTE: regardless of success in sending message, clear
+        DispatchQueue.main.async { [unowned self] in
+            
+            // Note: enable button again
+            sender.isEnabled = true
+            self.textInputView.text = ""
+            self.textViewHeightConstraint.isActive = true
+            self.placeholderLbl.isHidden = false
+            self.tableView.reloadData()
+            //self.tableView.scrollToBottom()
         }
     }
     
-    func hideKeyboardOnTap() {
+    func hideKeyboardOnTapTable() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         
         // NOTE: important to set to false so gestures wont overlap
@@ -91,16 +92,11 @@ class ChatViewController: BaseViewController, Storyboarded {
     }
 }
 
-// MARK: - ChatVC Query Messages
+// MARK: - Query Messages
 extension ChatViewController {
     @objc func fetchChat() {
         messages.removeAll()
-        lastDoc = nil
         listener?.remove()
-        
-//        query = coordinator?.dbController.db.collection("chat").order(by: "dateSent", descending: false).limit(to: 15)
-//        getMessages()
-        
         listenToChat()
     }
     
@@ -115,7 +111,6 @@ extension ChatViewController {
                 return
             }
 
-            print(snapshot.count)
             guard snapshot.count > 0 else {
                 self.messages.removeAll()
                 self.tableView.reloadData()
@@ -131,47 +126,14 @@ extension ChatViewController {
             }
             
             self.tableView.reloadData()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [unowned self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [unowned self] in
                 self.tableView.scrollToBottom()
             }
         })
     }
-    
-    func getMessages() {
-        query.getDocuments { [unowned self] (querySnapshot, error) in
-            guard error == nil else {
-                print(error?.localizedDescription as Any)
-                return
-            }
-
-            guard let snapshot = querySnapshot else {
-                return
-            }
-
-            print(snapshot.count)
-            guard snapshot.count > 0 else {
-                return
-            }
-
-            snapshot.documents.forEach { (docSnapshot) in
-                let data = docSnapshot.data()
-                let chat = Chat(text: data["message"] as! String, user: data["username"] as! String, dateSent: (data["date_sent"] as! Timestamp).dateValue())
-                self.messages.append(chat)
-                self.lastDoc = docSnapshot
-            }
-
-            self.tableView.reloadData()
-        }
-    }
-    
-    func paginate() {
-        guard lastDoc != nil else {return}
-//        query = query.start(afterDocument: lastDoc)
-//        getMessages()
-    }
 }
 
-// MARK: - TableViewDelegate, Datasource
+// MARK: - TableView
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
@@ -179,43 +141,30 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-        if let assumedUsername = coordinator?.dbController.user?.displayName {
+        // OWN message
+        if assumedUsername == message.user {
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellOwnIdentifier, for: indexPath) as! ChatOwnTableViewCell
             
-            // OWN message
-            if assumedUsername == message.user {
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellOwnIdentifier, for: indexPath) as! ChatOwnTableViewCell
-                
-                cell.userLbl.text = assumedUsername
-                cell.textLbl.text = message.text
-                cell.dateLbl.text = message.dateSent.chatDateFormatted()
-                cell.selectionStyle = .none
-                return cell
-            }
-            
-            // Others messages
-            else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellOtherIdentifier, for: indexPath) as! ChatOthersTableViewCell
-                
-                cell.userLbl.text = message.user
-                cell.textLbl.text = message.text
-                cell.dateLbl.text = message.dateSent.chatDateFormatted()
-                cell.selectionStyle = .none
-                return cell
-            }
+            cell.userLbl.text = assumedUsername
+            cell.textLbl.text = message.text
+            cell.dateLbl.text = message.dateSent.chatDateFormatted()
+            cell.selectionStyle = .none
+            return cell
         }
-        
-        return UITableViewCell()
+        // Other's messages
+        else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellOtherIdentifier, for: indexPath) as! ChatOthersTableViewCell
+            
+            cell.userLbl.text = message.user
+            cell.textLbl.text = message.text
+            cell.dateLbl.text = message.dateSent.chatDateFormatted()
+            cell.selectionStyle = .none
+            return cell
+        }
     }
-  
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //if (indexPath.row == messages.count - 1) {
-        //    paginate()
-        //}
-    }
-    
 }
 
-// MARK: - ChatVC Design
+// MARK: - Design
 extension ChatViewController {
     private func initializeUI() {
         title = "Chat app"
@@ -249,24 +198,25 @@ extension ChatViewController {
         tableView.allowsMultipleSelection = true
         
         registerForKeyboardNotifications()
-        
     }
     
+    // MARK: - LOG OUT
     @objc private func logout() {
         let haptic = UIImpactFeedbackGenerator(style: .light)
         haptic.impactOccurred()
         
-        let alert = UIAlertController(title: "", message: "Log out?", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+        // NOTE: uncomment to show confirmation message before logout
+        let alert = UIAlertController(title: "\(assumedUsername ?? "")", message: "Are you sure you want to log out of Chat app?", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { _ in
             let haptic = UIImpactFeedbackGenerator(style: .medium)
             haptic.impactOccurred()
-            self.onLogout?()
+            self.dismiss(animated: true) {
+                self.onLogout?()
+            }
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
 }
 
 // MARK: - Keyboard Notifications
@@ -312,7 +262,6 @@ extension ChatViewController {
         UIView.animate(withDuration: 1) {
             self.view.layoutIfNeeded()
         }
-        
     }
 }
 
@@ -340,6 +289,8 @@ extension ChatViewController: UITextViewDelegate {
             placeholderLbl.isHidden = true
         }
         
+        // custom checker for textview default height constraint
+        // this is to ensure that initial height of textview is 1liner
         if textView.intrinsicContentSize.height > 44.5 {
             if textViewHeightConstraint != nil {
                 textViewHeightConstraint.isActive = false

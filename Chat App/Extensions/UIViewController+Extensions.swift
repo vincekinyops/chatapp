@@ -13,17 +13,17 @@ extension UIViewController {
     
     
     /// Hide keyboard on tap of anywhere in the main screen's view
-//    func hideKeyboardOnTap() {
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-//        
-//        // NOTE: important to set to false so gestures wont overlap
-//        tap.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tap)
-//    }
-//    
-//    @objc fileprivate func dismissKeyboard() {
-//        view.endEditing(true)
-//    }
+    func hideKeyboardOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        // NOTE: important to set to false so gestures wont overlap
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc fileprivate func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     func clearNavbar() {
         self.navigationController?.navigationBar.barTintColor = UIColor.white

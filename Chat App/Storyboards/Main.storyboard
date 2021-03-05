@@ -225,6 +225,13 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="cIa-Cv-za4">
+                                <rect key="frame" x="184.5" y="293.5" width="45" height="40.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="1Zj-Ku-P5t"/>
+                                </constraints>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="yNJ-F6-DmL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -237,17 +244,20 @@
                             <constraint firstItem="rXB-D2-neT" firstAttribute="top" secondItem="NFH-oS-Lr1" secondAttribute="bottom" constant="15" id="AHF-vY-oZJ"/>
                             <constraint firstItem="rXB-D2-neT" firstAttribute="centerX" secondItem="NFH-oS-Lr1" secondAttribute="centerX" id="EZA-4q-82C"/>
                             <constraint firstItem="7NS-Fg-Nqf" firstAttribute="leading" secondItem="ijP-5e-d7v" secondAttribute="leading" id="I00-b1-r0m"/>
-                            <constraint firstItem="NFH-oS-Lr1" firstAttribute="width" secondItem="0dU-ev-Bpf" secondAttribute="width" multiplier="0.9" id="MB1-Hh-ZHr"/>
+                            <constraint firstItem="NFH-oS-Lr1" firstAttribute="width" relation="greaterThanOrEqual" secondItem="0dU-ev-Bpf" secondAttribute="width" multiplier="0.9" id="MB1-Hh-ZHr"/>
                             <constraint firstItem="u7r-Eq-bfb" firstAttribute="top" secondItem="rXB-D2-neT" secondAttribute="bottom" constant="-2" id="NOt-db-4Dz"/>
                             <constraint firstItem="tDS-kI-LG7" firstAttribute="width" secondItem="0dU-ev-Bpf" secondAttribute="width" multiplier="0.9" id="Uo0-kO-wcL"/>
                             <constraint firstItem="7NS-Fg-Nqf" firstAttribute="top" secondItem="ijP-5e-d7v" secondAttribute="bottom" constant="8" symbolic="YES" id="ZQe-c8-iHN"/>
                             <constraint firstItem="QJO-ei-wyA" firstAttribute="trailing" secondItem="ijP-5e-d7v" secondAttribute="trailing" id="a8e-3o-yyU"/>
+                            <constraint firstItem="cIa-Cv-za4" firstAttribute="centerX" secondItem="NFH-oS-Lr1" secondAttribute="centerX" id="dFO-gM-bMl"/>
+                            <constraint firstItem="cIa-Cv-za4" firstAttribute="centerY" secondItem="NFH-oS-Lr1" secondAttribute="centerY" constant="2" id="g8H-fj-PQp"/>
                             <constraint firstItem="QJO-ei-wyA" firstAttribute="leading" secondItem="ijP-5e-d7v" secondAttribute="leading" id="hg1-5r-qAm"/>
                             <constraint firstItem="7NS-Fg-Nqf" firstAttribute="trailing" secondItem="ijP-5e-d7v" secondAttribute="trailing" id="iN9-2A-dds"/>
                             <constraint firstItem="tDS-kI-LG7" firstAttribute="top" secondItem="yNJ-F6-DmL" secondAttribute="top" constant="50" id="k3F-6D-s1F"/>
                             <constraint firstItem="ijP-5e-d7v" firstAttribute="leading" secondItem="tDS-kI-LG7" secondAttribute="leading" id="kto-lz-xbR"/>
                             <constraint firstItem="QJO-ei-wyA" firstAttribute="firstBaseline" secondItem="rXB-D2-neT" secondAttribute="baseline" constant="50" id="kwH-CN-7i6"/>
                             <constraint firstItem="ijP-5e-d7v" firstAttribute="width" secondItem="tDS-kI-LG7" secondAttribute="width" id="l8E-8U-2L2"/>
+                            <constraint firstItem="cIa-Cv-za4" firstAttribute="height" secondItem="NFH-oS-Lr1" secondAttribute="height" multiplier="0.9" id="oVD-E6-ymo"/>
                             <constraint firstItem="7os-fO-8WF" firstAttribute="top" secondItem="tDS-kI-LG7" secondAttribute="bottom" constant="8" symbolic="YES" id="onk-8j-fC6"/>
                             <constraint firstItem="ijP-5e-d7v" firstAttribute="top" secondItem="7os-fO-8WF" secondAttribute="bottom" constant="5" id="sNi-OP-Yl9"/>
                             <constraint firstItem="u7r-Eq-bfb" firstAttribute="width" secondItem="rXB-D2-neT" secondAttribute="width" id="xTl-cj-ZsI"/>
@@ -255,6 +265,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityView" destination="cIa-Cv-za4" id="XwN-Fo-M2u"/>
                         <outlet property="loginBtn" destination="rXB-D2-neT" id="4Jt-uJ-NfD"/>
                         <outlet property="passwordErrorLbl" destination="7NS-Fg-Nqf" id="eFy-9K-k8o"/>
                         <outlet property="passwordField" destination="ijP-5e-d7v" id="G3N-Nn-VIY"/>

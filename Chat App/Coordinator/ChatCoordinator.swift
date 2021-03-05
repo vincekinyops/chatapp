@@ -24,6 +24,8 @@ class ChatCoordinator: Coordinator {
     var messages: [Chat] = []
     var dbController: DBController!
     
+    var onLogout: (() -> ())?
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -32,15 +34,16 @@ class ChatCoordinator: Coordinator {
         let vc = ChatViewController.instantiate()
         vc.coordinator = self
         self.dbController = parentCoordinator?.dbController
-        vc.onLogout = { [unowned self] in
+        vc.onLogout = {
+            self.parentCoordinator?.eventOccurred(with: .logout, data: nil)
+            
             self.dbController?.logout(completion: { (success) in
-                
                 // logout regardless of success DB action to ensure screen goes back
-                parentCoordinator?.eventOccurred(with: .logout, data: nil)
+                //self.onLogout?()
             })
         }
         vc.onSend = { [unowned self] message in
-            parentCoordinator?.dbController.sendMessage(message, completion: { (success) in
+            self.dbController.sendMessage(message, completion: { (success) in
                 if success {
                     
                 } else {

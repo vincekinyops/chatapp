@@ -7,11 +7,15 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
+import FirebaseFirestore
+import UIKit
 
 class DBController {
     var ref: DocumentReference? = nil
     let db = Firestore.firestore()
     var user: User?
+    var backGroundTaskID: UIBackgroundTaskIdentifier?
     
     init() {
         user = Auth.auth().currentUser
@@ -19,9 +23,6 @@ class DBController {
         // NOTE: force logout the user if it is deleted from firebase console
         if let user = user {
             user.getIDTokenResult(forcingRefresh: true) { (result, error) in
-//                print(result)
-//                print(error)
-                
                 // TODO: go to signup screen after forcing logout
             }
         }
@@ -31,13 +32,6 @@ class DBController {
 
             print("User changed: \(String(describing: userFound))")
         }
-        
-//        let q = db.collection("users").getDocuments { (s, e) in
-//            
-//            for doc in s!.documents {
-//                print(doc.data())
-//            }
-//        }
     }
     
     func sendMessage(_ message: String, completion: @escaping (_ success: Bool) -> ()) {
@@ -47,19 +41,18 @@ class DBController {
             "date_sent": Date()
         ] as [String : Any]
         
-        ref = db.collection("chat").addDocument(data: data) { (error) in
-            if let err = error {
-                print("Error sending message: \(err)")
-                completion(false)
-            } else {
-                print("Chat added with ID: \(self.ref!.documentID)")
-                completion(true)
-            }
+        // send task to background to ensure it finishes
+        DispatchQueue.global().async {
+            self.backGroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "send message", expirationHandler: {
+                UIApplication.shared.endBackgroundTask(self.backGroundTaskID!)
+                self.backGroundTaskID = UIBackgroundTaskIdentifier.invalid
+            })
+            
+            self.ref = self.db.collection("chat").addDocument(data: data)
+            completion(true)
+            UIApplication.shared.endBackgroundTask(self.backGroundTaskID!)
+            self.backGroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
-    }
-    
-    func getMessages() {
-        //db.collection("chat").
     }
     
     func isUserExist(with username: String, completion: @escaping (_ exists: Bool, _ error: Error?) -> ()) {
@@ -78,7 +71,7 @@ class DBController {
     
     func signup(username: String, password: String, completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         
-        // NOTE: make dummy email from username :)))
+        // NOTE: make dummy email from username just for the purpose of Auth
         let makeEmail = username + "@testchatapp.com"
         Auth.auth().createUser(withEmail: makeEmail, password: password) { [unowned self] (authResult, error) in
             
