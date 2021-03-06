@@ -101,7 +101,7 @@ extension ChatViewController {
     }
     
     func listenToChat() {
-        listener = coordinator?.dbController.db.collection("chat").order(by: "date_sent").addSnapshotListener(includeMetadataChanges: true, listener: { [unowned self] (querySnapshot, error) in
+        listener = coordinator?.dbController.db.collection("chat").order(by: "date_sent", descending: true).addSnapshotListener(includeMetadataChanges: true, listener: { [unowned self] (querySnapshot, error) in
             
             guard error == nil else {
                 return
