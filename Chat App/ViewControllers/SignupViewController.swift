@@ -28,6 +28,7 @@ class SignupViewController: BaseViewController, Storyboarded {
                 passwordErrorLbl.isHidden = !showError
             }
             signupBtn.isEnabled = true
+            self.loader(false)
         }
     }
     
